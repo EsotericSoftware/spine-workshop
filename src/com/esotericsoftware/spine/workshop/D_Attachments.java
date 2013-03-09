@@ -2,6 +2,7 @@
 package com.esotericsoftware.spine.workshop;
 
 import com.esotericsoftware.spine.Animation;
+import com.esotericsoftware.spine.Attachment;
 import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
@@ -44,32 +45,33 @@ public class D_Attachments extends ApplicationAdapter {
 		root.setY(20);
 
 		skeleton.setSkin("goblin");
-		skeleton.setSlotsToBindPose();
+		skeleton.setSlotsToBindPose(); // Without this, the attachments from the skin won't be shown! See setSkin javadocs.
 		skeleton.updateWorldTransform();
 
 		Gdx.input.setInputProcessor(new InputAdapter() {
 			public boolean keyDown (int keycode) {
 				switch (keycode) {
 				case Keys.NUM_1:
-					skeleton.setAttachment("left hand item", "spear");
-					break;
-				case Keys.NUM_2:
 					skeleton.setAttachment("left hand item", "dagger");
 					break;
+				case Keys.NUM_2:
+					skeleton.setAttachment("left hand item", "spear");
+					break;
 				case Keys.NUM_3:
-					skeleton.setAttachment("right hand item", "dagger");
+					Attachment attachment = skeleton.getAttachment("right hand item", "dagger");
+					skeleton.findSlot("right hand item").setAttachment(attachment);
 					break;
 				case Keys.NUM_4:
-					skeleton.findSlot("left hand item").setAttachment(null);
+					skeleton.setAttachment("left hand item", null);
 					skeleton.findSlot("right hand item").setAttachment(null);
 					break;
 				case Keys.NUM_5:
 					skeleton.setSkin("goblingirl");
-					skeleton.setSlotsToBindPose();
+					// setSlotsToBindPose isn't needed here, see setSkin javadocs.
 					break;
 				case Keys.NUM_6:
 					skeleton.setSkin("goblin");
-					skeleton.setSlotsToBindPose();
+					// setSlotsToBindPose isn't needed here, see setSkin javadocs.
 					break;
 				}
 				return true;
