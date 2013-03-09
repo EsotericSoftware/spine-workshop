@@ -15,9 +15,9 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.Array;
 
-public class E_AnimationTransition2 extends ApplicationAdapter {
+public class F_AnimationStates extends ApplicationAdapter {
 	SpriteBatch batch;
 	ShapeRenderer renderer;
 
@@ -25,9 +25,8 @@ public class E_AnimationTransition2 extends ApplicationAdapter {
 	Skeleton skeleton;
 	Animation walkAnimation;
 	Animation jumpAnimation;
-	float time;
 	Bone root;
-	String state = "walk";
+	AnimationState state;
 
 	public void create () {
 		batch = new SpriteBatch();
@@ -39,6 +38,10 @@ public class E_AnimationTransition2 extends ApplicationAdapter {
 		walkAnimation = json.readAnimation(Gdx.files.internal("spineboy/spineboy-walk.json"), skeletonData);
 		jumpAnimation = json.readAnimation(Gdx.files.internal("spineboy/spineboy-jump.json"), skeletonData);
 
+		state = new AnimationState();
+		state.setMixing(walkAnimation, jumpAnimation, 0.4f);
+		state.setAnimation(walkAnimation, true);
+
 		skeleton = new Skeleton(skeletonData);
 
 		root = skeleton.getRootBone();
@@ -48,65 +51,14 @@ public class E_AnimationTransition2 extends ApplicationAdapter {
 		skeleton.updateWorldTransform();
 	}
 
-	static class AnimationState {
-		Animation current;
-		float currentTime;
-		Animation previous;
-		float previousTime;
-		float mixTime;
-		ObjectMap<Key, Float> animationToMixTime = new ObjectMap();
-
-		public void setAnimation (Animation animation) {
-			setAnimation(animation, 0);
-		}
-
-		public void setAnimation (Animation animation, float time) {
-			if (current != null) {
-
-			}
-			current = animation;
-			currentTime = time;
-		}
-
-		static class Key {
-			Animation a1, a2;
-
-			public int hashCode () {
-				return 31 * (31 + a1.hashCode()) + a2.hashCode();
-			}
-
-			public boolean equals (Object obj) {
-				if (this == obj) return true;
-				if (obj == null) return false;
-				if (getClass() != obj.getClass()) return false;
-				Key other = (Key)obj;
-				if (a1 == null) {
-					if (other.a1 != null) return false;
-				} else if (!a1.equals(other.a1)) return false;
-				if (a2 == null) {
-					if (other.a2 != null) return false;
-				} else if (!a2.equals(other.a2)) return false;
-				return true;
-			}
-		}
-	}
-
 	public void render () {
-		time += Gdx.graphics.getDeltaTime() / 6;
+		state.update(Gdx.graphics.getDeltaTime() / 6);
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
-		walkAnimation.apply(skeleton, time, true);
-		if (time > 1) {
-			float jumpTime = time - 1;
-			float mixTime = 0.2f;
-			if (jumpTime > mixTime)
-				jumpAnimation.apply(skeleton, jumpTime, false);
-			else
-				jumpAnimation.mix(skeleton, jumpTime, false, jumpTime / mixTime);
-			if (time > 4) time = 0;
-		}
+		state.apply(skeleton);
+		if (state.getTime() > 1 && state.getAnimation() == walkAnimation) state.setAnimation(jumpAnimation, false);
 		skeleton.updateWorldTransform();
 		skeleton.draw(batch);
 
@@ -127,6 +79,6 @@ public class E_AnimationTransition2 extends ApplicationAdapter {
 		config.title = "AnimationTransition - Spine";
 		config.width = 640;
 		config.height = 480;
-		new LwjglApplication(new E_AnimationTransition2(), config);
+		new LwjglApplication(new F_AnimationStates(), config);
 	}
 }

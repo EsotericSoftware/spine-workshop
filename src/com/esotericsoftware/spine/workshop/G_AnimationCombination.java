@@ -15,9 +15,8 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 
-public class G_AnimationProcedural extends ApplicationAdapter {
+public class G_AnimationCombination extends ApplicationAdapter {
 	SpriteBatch batch;
 	ShapeRenderer renderer;
 
@@ -27,10 +26,6 @@ public class G_AnimationProcedural extends ApplicationAdapter {
 	Animation bowAnimation;
 	float time;
 	Bone root;
-	Bone leftShoulder;
-	Bone rightShoulder;
-	Bone torso;
-	Bone head;
 	String state = "walk";
 
 	public void create () {
@@ -50,15 +45,10 @@ public class G_AnimationProcedural extends ApplicationAdapter {
 		root.setY(20);
 
 		skeleton.updateWorldTransform();
-
-		leftShoulder = skeleton.findBone("left shoulder");
-		rightShoulder = skeleton.findBone("right shoulder");
-		torso = skeleton.findBone("torso");
-		head = skeleton.findBone("head");
 	}
 
 	public void render () {
-		time += Gdx.graphics.getDeltaTime() / 4;
+		time += Gdx.graphics.getDeltaTime() / 2;
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -67,23 +57,11 @@ public class G_AnimationProcedural extends ApplicationAdapter {
 		if (time > 1) {
 			float jumpTime = time - 1;
 			float mixTime = 0.4f;
-			float mix = MathUtils.clamp(jumpTime / mixTime, 0, 1);
-			bowAnimation.mix(skeleton, jumpTime, false, mix);
-
-			float x = leftShoulder.getWorldX() - Gdx.input.getX();
-			float y = leftShoulder.getWorldY() - Gdx.input.getY();
-			float r = ((float)Math.atan2(x, y) * MathUtils.radDeg + 90) * mix;
-			leftShoulder.setRotation(leftShoulder.getRotation() + r);
-
-			rightShoulder.setRotation(rightShoulder.getRotation() + r);
-
-			torso.setRotation(torso.getRotation() + r * 0.3f);
-
-			head.setRotation(head.getRotation() + r * 0.3f);
+			if (jumpTime > mixTime)
+				bowAnimation.mix(skeleton, jumpTime, false, 0.95f);
+			else
+				bowAnimation.mix(skeleton, jumpTime, false, 0.95f * jumpTime / mixTime);
 		}
-
-		skeleton.updateWorldTransform();
-
 		skeleton.updateWorldTransform();
 		skeleton.draw(batch);
 
@@ -101,9 +79,9 @@ public class G_AnimationProcedural extends ApplicationAdapter {
 
 	public static void main (String[] args) throws Exception {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "AnimationProcedural - Spine";
+		config.title = "AnimationCombination - Spine";
 		config.width = 640;
 		config.height = 480;
-		new LwjglApplication(new G_AnimationProcedural(), config);
+		new LwjglApplication(new G_AnimationCombination(), config);
 	}
 }
