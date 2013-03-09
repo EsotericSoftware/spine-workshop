@@ -36,7 +36,7 @@
 	{ "name": "undies", "bone": "pelvis", "attachment": "undies" },
 	{ "name": "right upper leg", "bone": "right upper leg", "attachment": "right upper leg" },
 	{ "name": "head", "bone": "head", "attachment": "head" },
-	{ "name": "eyes", "bone": "head", "attachment": "eyes open" },
+	{ "name": "eyes", "bone": "head" },
 	{ "name": "right shoulder", "bone": "right shoulder", "attachment": "right shoulder" },
 	{ "name": "right arm", "bone": "right arm", "attachment": "right arm" },
 	{ "name": "right hand item", "bone": "right hand" },
@@ -124,6 +124,9 @@
 		},
 		"undie straps": {
 			"undie straps": { "name": "goblin/undie-straps", "x": -3.87, "y": 13.1, "scaleX": 1.089, "width": 55, "height": 19 }
+		},
+		"eyes": {
+			"eyes closed": { "name": "goblin/eyes-closed", "x": 32.21, "y": -21.27, "rotation": -88.92, "width": 34, "height": 12 }
 		}
 	},
 	"goblingirl": {
@@ -189,6 +192,9 @@
 		},
 		"undies": {
 			"undies": { "name": "goblingirl/undies", "x": 5.4, "y": 1.7, "width": 36, "height": 29 }
+		},
+		"eyes": {
+			"eyes closed": { "name": "goblingirl/eyes-closed", "x": 28, "y": -25.54, "rotation": -87.04, "width": 37, "height": 21 }
 		}
 	}
 }
