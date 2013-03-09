@@ -105,7 +105,7 @@ public class H_Box2D extends ApplicationAdapter {
 	}
 
 	public void render () {
-		float delta = Gdx.graphics.getDeltaTime();
+		float delta = Gdx.graphics.getDeltaTime() / 2;
 		world.step(delta, 8, 3);
 		time += delta;
 

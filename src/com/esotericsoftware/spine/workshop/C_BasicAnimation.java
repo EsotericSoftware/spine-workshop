@@ -45,13 +45,14 @@ public class C_BasicAnimation extends ApplicationAdapter {
 	}
 
 	public void render () {
-		time += Gdx.graphics.getDeltaTime();
+		float delta = Gdx.graphics.getDeltaTime() / 3;
+		time += delta;
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 
 		animation.apply(skeleton, time, true);
-		root.setX(root.getX() + 100 * Gdx.graphics.getDeltaTime());
+		root.setX(root.getX() + 230 * delta);
 		skeleton.updateWorldTransform();
 		skeleton.draw(batch);
 
