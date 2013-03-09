@@ -16,14 +16,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class E_AnimationCombination extends ApplicationAdapter {
+public class E_AnimationTransition extends ApplicationAdapter {
 	SpriteBatch batch;
 	ShapeRenderer renderer;
 
 	TextureAtlas atlas;
 	Skeleton skeleton;
 	Animation walkAnimation;
-	Animation bowAnimation;
+	Animation jumpAnimation;
 	float time;
 	Bone root;
 	String state = "walk";
@@ -36,7 +36,7 @@ public class E_AnimationCombination extends ApplicationAdapter {
 		SkeletonJson json = new SkeletonJson(atlas);
 		SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("spineboy/spineboy-skeleton.json"));
 		walkAnimation = json.readAnimation(Gdx.files.internal("spineboy/spineboy-walk.json"), skeletonData);
-		bowAnimation = json.readAnimation(Gdx.files.internal("spineboy/spineboy-bow.json"), skeletonData);
+		jumpAnimation = json.readAnimation(Gdx.files.internal("spineboy/spineboy-jump.json"), skeletonData);
 
 		skeleton = new Skeleton(skeletonData);
 
@@ -56,11 +56,12 @@ public class E_AnimationCombination extends ApplicationAdapter {
 		walkAnimation.apply(skeleton, time, true);
 		if (time > 1) {
 			float jumpTime = time - 1;
-			float mixTime = 0.4f;
+			float mixTime = 0.2f;
 			if (jumpTime > mixTime)
-				bowAnimation.mix(skeleton, jumpTime, false, 0.85f);
+				jumpAnimation.apply(skeleton, jumpTime, false);
 			else
-				bowAnimation.mix(skeleton, jumpTime, false, 0.85f * jumpTime / mixTime);
+				jumpAnimation.mix(skeleton, jumpTime, false, jumpTime / mixTime);
+			if (time > 4) time = 0;
 		}
 		skeleton.updateWorldTransform();
 		skeleton.draw(batch);
@@ -79,9 +80,9 @@ public class E_AnimationCombination extends ApplicationAdapter {
 
 	public static void main (String[] args) throws Exception {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "AnimationCombination - Spine";
+		config.title = "AnimationTransition - Spine";
 		config.width = 640;
 		config.height = 480;
-		new LwjglApplication(new E_AnimationCombination(), config);
+		new LwjglApplication(new E_AnimationTransition(), config);
 	}
 }

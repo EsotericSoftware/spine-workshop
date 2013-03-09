@@ -9,6 +9,8 @@ import com.esotericsoftware.spine.SkeletonJson;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL10;
@@ -16,7 +18,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class C_BasicAnimation extends ApplicationAdapter {
+public class D_Attachments extends ApplicationAdapter {
 	SpriteBatch batch;
 	ShapeRenderer renderer;
 
@@ -30,18 +32,49 @@ public class C_BasicAnimation extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		renderer = new ShapeRenderer();
 
-		atlas = new TextureAtlas(Gdx.files.internal("spineboy/spineboy.atlas"));
+		atlas = new TextureAtlas(Gdx.files.internal("goblins/goblins.atlas"));
 		SkeletonJson json = new SkeletonJson(atlas);
-		SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("spineboy/spineboy-skeleton.json"));
-		animation = json.readAnimation(Gdx.files.internal("spineboy/spineboy-walk.json"), skeletonData);
+		SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("goblins/goblins-skeleton.json"));
+		animation = json.readAnimation(Gdx.files.internal("goblins/goblins-walk.json"), skeletonData);
 
 		skeleton = new Skeleton(skeletonData);
 
 		root = skeleton.getRootBone();
-		root.setX(10);
+		root.setX(220);
 		root.setY(20);
 
+		skeleton.setSkin("goblin");
+		skeleton.setSlotsToBindPose();
 		skeleton.updateWorldTransform();
+
+		Gdx.input.setInputProcessor(new InputAdapter() {
+			public boolean keyDown (int keycode) {
+				switch (keycode) {
+				case Keys.NUM_1:
+					skeleton.setAttachment("left hand item", "spear");
+					break;
+				case Keys.NUM_2:
+					skeleton.setAttachment("left hand item", "dagger");
+					break;
+				case Keys.NUM_3:
+					skeleton.setAttachment("right hand item", "dagger");
+					break;
+				case Keys.NUM_4:
+					skeleton.findSlot("left hand item").setAttachment(null);
+					skeleton.findSlot("right hand item").setAttachment(null);
+					break;
+				case Keys.NUM_5:
+					skeleton.setSkin("goblingirl");
+					skeleton.setSlotsToBindPose();
+					break;
+				case Keys.NUM_6:
+					skeleton.setSkin("goblin");
+					skeleton.setSlotsToBindPose();
+					break;
+				}
+				return true;
+			}
+		});
 	}
 
 	public void render () {
@@ -51,13 +84,10 @@ public class C_BasicAnimation extends ApplicationAdapter {
 		batch.begin();
 
 		animation.apply(skeleton, time, true);
-		root.setX(root.getX() + 100 * Gdx.graphics.getDeltaTime());
 		skeleton.updateWorldTransform();
 		skeleton.draw(batch);
 
 		batch.end();
-
-		skeleton.drawDebug(renderer);
 	}
 
 	public void resize (int width, int height) {
@@ -71,9 +101,9 @@ public class C_BasicAnimation extends ApplicationAdapter {
 
 	public static void main (String[] args) throws Exception {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "BasicAnimation - Spine";
+		config.title = "Attachments - Spine";
 		config.width = 640;
 		config.height = 480;
-		new LwjglApplication(new C_BasicAnimation(), config);
+		new LwjglApplication(new D_Attachments(), config);
 	}
 }

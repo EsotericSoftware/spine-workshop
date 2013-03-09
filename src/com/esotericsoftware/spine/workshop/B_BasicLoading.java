@@ -32,7 +32,7 @@ public class B_BasicLoading extends ApplicationAdapter {
 		skeleton = new Skeleton(skeletonData);
 
 		Bone root = skeleton.getRootBone();
-		root.setX(100);
+		root.setX(220);
 		root.setY(20);
 
 		skeleton.updateWorldTransform();

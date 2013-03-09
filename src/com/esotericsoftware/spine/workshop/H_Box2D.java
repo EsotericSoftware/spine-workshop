@@ -34,7 +34,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class G_Box2D extends ApplicationAdapter {
+public class H_Box2D extends ApplicationAdapter {
 	SpriteBatch batch;
 	ShapeRenderer renderer;
 
@@ -230,6 +230,6 @@ public class G_Box2D extends ApplicationAdapter {
 		config.title = "Box2D - Spine";
 		config.width = 640;
 		config.height = 480;
-		new LwjglApplication(new G_Box2D(), config);
+		new LwjglApplication(new H_Box2D(), config);
 	}
 }

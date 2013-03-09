@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
-public class F_AnimationProcedural extends ApplicationAdapter {
+public class G_AnimationProcedural extends ApplicationAdapter {
 	SpriteBatch batch;
 	ShapeRenderer renderer;
 
@@ -67,7 +67,7 @@ public class F_AnimationProcedural extends ApplicationAdapter {
 		if (time > 1) {
 			float jumpTime = time - 1;
 			float mixTime = 0.4f;
-			float mix = MathUtils.clamp(0.85f * jumpTime / mixTime, 0, 1);
+			float mix = MathUtils.clamp(jumpTime / mixTime, 0, 1);
 			bowAnimation.mix(skeleton, jumpTime, false, mix);
 
 			float x = leftShoulder.getWorldX() - Gdx.input.getX();
@@ -104,6 +104,6 @@ public class F_AnimationProcedural extends ApplicationAdapter {
 		config.title = "AnimationProcedural - Spine";
 		config.width = 640;
 		config.height = 480;
-		new LwjglApplication(new F_AnimationProcedural(), config);
+		new LwjglApplication(new G_AnimationProcedural(), config);
 	}
 }
