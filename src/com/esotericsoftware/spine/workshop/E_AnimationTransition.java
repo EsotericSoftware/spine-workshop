@@ -56,7 +56,7 @@ public class E_AnimationTransition extends ApplicationAdapter {
 		walkAnimation.apply(skeleton, time, true);
 		if (time > 1) {
 			float jumpTime = time - 1;
-			float mixTime = 0.2f;
+			float mixTime = 0.4f;
 			if (jumpTime > mixTime)
 				jumpAnimation.apply(skeleton, jumpTime, false);
 			else

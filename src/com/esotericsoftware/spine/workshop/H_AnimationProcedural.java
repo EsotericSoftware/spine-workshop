@@ -58,7 +58,7 @@ public class H_AnimationProcedural extends ApplicationAdapter {
 	}
 
 	public void render () {
-		time += Gdx.graphics.getDeltaTime() / 4;
+		time += Gdx.graphics.getDeltaTime() / 6;
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();

@@ -76,7 +76,7 @@ public class F_AnimationStates extends ApplicationAdapter {
 
 	public static void main (String[] args) throws Exception {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "AnimationTransition - Spine";
+		config.title = "AnimationStates - Spine";
 		config.width = 640;
 		config.height = 480;
 		new LwjglApplication(new F_AnimationStates(), config);

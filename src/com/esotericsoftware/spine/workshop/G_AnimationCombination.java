@@ -48,7 +48,7 @@ public class G_AnimationCombination extends ApplicationAdapter {
 	}
 
 	public void render () {
-		time += Gdx.graphics.getDeltaTime() / 2;
+		time += Gdx.graphics.getDeltaTime() / 4;
 
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -58,9 +58,9 @@ public class G_AnimationCombination extends ApplicationAdapter {
 			float jumpTime = time - 1;
 			float mixTime = 0.4f;
 			if (jumpTime > mixTime)
-				bowAnimation.mix(skeleton, jumpTime, false, 0.95f);
+				bowAnimation.mix(skeleton, jumpTime, false, 0.85f);
 			else
-				bowAnimation.mix(skeleton, jumpTime, false, 0.95f * jumpTime / mixTime);
+				bowAnimation.mix(skeleton, jumpTime, false, 0.85f * jumpTime / mixTime);
 		}
 		skeleton.updateWorldTransform();
 		skeleton.draw(batch);

@@ -88,7 +88,6 @@ public class I_Box2D extends ApplicationAdapter {
 		for (Slot slot : skeleton.getSlots()) {
 			if (!(slot.getAttachment() instanceof Box2dAttachment)) continue;
 			Box2dAttachment attachment = (Box2dAttachment)slot.getAttachment();
-			float[] attachmentVertices = attachment.getWorldVertices();
 
 			PolygonShape boxPoly = new PolygonShape();
 			boxPoly.setAsBox(attachment.getWidth() / 2 * attachment.getScaleX(),
